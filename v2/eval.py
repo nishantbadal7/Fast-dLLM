@@ -35,6 +35,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig
 import json
 import time
 import types
+import fast_dllm
 import generation_functions
 
 def set_seed(seed):
@@ -76,9 +77,8 @@ class Fast_dLLM_v2EvalHarness(LM):
             model_kwargs.update({'device_map': {'': f'{self.accelerator.device}'}})
         
         self.model = AutoModelForCausalLM.from_pretrained(
-            model_path, 
-            trust_remote_code=True, 
-            torch_dtype=torch.bfloat16, 
+            model_path,
+            torch_dtype=torch.bfloat16,
             **model_kwargs
         )
         self.model.eval()
@@ -96,7 +96,7 @@ class Fast_dLLM_v2EvalHarness(LM):
             self._rank = 0
             self._world_size = 1
 
-        self.tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_path)
         
         self.show_speed = show_speed
         self.max_new_tokens = max_new_tokens

@@ -2,6 +2,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 import numpy as np
 import random
+import fast_dllm
 
 model_name = "Efficient-Large-Model/Fast_dLLM_v2_7B"
 
@@ -9,10 +10,9 @@ model = AutoModelForCausalLM.from_pretrained(
     model_name,
     torch_dtype="auto",
     device_map="cuda:0",
-    trust_remote_code=True
 )
 
-tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 # Initialize conversation
 messages = []
